@@ -1,0 +1,14 @@
+.model top
+.inputs a b c d e f
+.outputs o1 o2
+.names a b c d e f o1
+---111 1
+--1--- 1
+-0---0 1
+0--001 1
+.names a b c d e f o2
+--0111 1
+-0-1-1 1
+-00-11 1
+000--1 1
+.end
