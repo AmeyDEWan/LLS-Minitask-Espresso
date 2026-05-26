@@ -1,0 +1,220 @@
+\documentclass[
+	ngerman,
+	ruledheaders=section,
+	class=report,
+	thesis={type=Report}, %Möglichkeiten: Seminararbeit, bachelor, master
+	accentcolor=2d,
+	marginpar=false,
+	BCOR=5mm,
+	parskip=half-,
+	fontsize=12pt
+]{tudapub}
+
+% Achtung: Diese Vorlage verwendet biblatex. Bitte wählt biber in eurem Editor als Literaturverzeichnis-Compiler aus.
+
+\addTitleBoxLogo*{\includegraphics[width=\linewidth,trim=-1.05cm -0.5cm -4.45cm -0.5cm]{bilder/rs_logo}}
+
+% Der folgende Block ist nur bei pdfTeX auf Versionen vor April 2018 notwendig
+\usepackage{iftex}
+\ifPDFTeX
+\usepackage[utf8]{inputenc}
+\fi
+
+%%%%%%%%%%%%%%%%%%%
+%Sprachanpassung & Verbesserte Trennregeln
+%%%%%%%%%%%%%%%%%%%
+\usepackage[english]{babel}
+\usepackage[autostyle]{csquotes}% Anführungszeichen vereinfacht
+\usepackage{microtype}
+
+%%%%%%%%%%%%%%%%%%%
+%Literaturverzeichnis
+%%%%%%%%%%%%%%%%%%%
+\usepackage[sorting=none]{biblatex}
+\bibliography{literature}
+
+%%%%%%%%%%%%%%%%%%%
+%Tabellen
+%%%%%%%%%%%%%%%%%%%
+%\usepackage{array}     % Basispaket für Tabellenkonfiguration, wird von den folgenden automatisch geladen
+\usepackage{tabularx}   % Tabellen, die sich automatisch der Breite anpassen
+%\usepackage{longtable} % Mehrseitige Tabellen
+%\usepackage{xltabular} % Mehrseitige Tabellen mit anpassarer Breite
+\usepackage{booktabs}   % Verbesserte Möglichkeiten für Tabellenlayout über horizontale Linien
+
+%%%%%%%%%%%%%%%%%%%
+%Pseudocode
+%%%%%%%%%%%%%%%%%%%
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+%%%%%%%%%%%%%%%%%%%
+%Paketvorschläge Mathematik
+%%%%%%%%%%%%%%%%%%%
+%\usepackage{mathtools} % erweiterte Fassung von amsmath
+%\usepackage{amssymb}   % erweiterter Zeichensatz
+%\usepackage{siunitx}   % Einheiten
+
+%%%%%%%%%%%%%%%%%%%
+%RS Vorlage
+%%%%%%%%%%%%%%%%%%%
+\usepackage{acronym}
+\usepackage{listings}
+
+%Packages für KI Macros
+\usepackage{hyperref}
+\usepackage{xparse}
+\usepackage{etoolbox}
+\usepackage{iflang}
+\usepackage{pgfplots}
+
+
+\lstset{language=C,basicstyle=\small, breaklines=true, showtabs=false, showspaces=false, showstringspaces=false}
+
+\renewcommand{\lstlistingname}{Quelltext}
+\lstset{literate=%
+	{Ö}{{\"O}}1
+	{Ä}{{\"A}}1
+	{Ü}{{\"U}}1
+	{ß}{{\ss}}1
+	{ü}{{\"u}}1
+	{ä}{{\"a}}1
+	{ö}{{\"o}}1
+}
+
+\begin{document}
+
+\Metadata{
+	title=Espresso,
+	author=Amey Wankhede, Sebastian Engel
+}
+
+\title{Espresso}
+\subtitle{Low Level Synthese - Minitask 1} %optional
+\author[Amey Wankhede \and Sebastian Engel]{Amey Wankhede \and Sebastian Engel} %optionales Argument ist die Signatur, bitte auch anpassen
+
+
+\department{etit}
+\institute{
+	\IfLanguageName{english}{
+		Institute of Computer Engineering
+	}{
+		Institut für Datentechnik
+	}
+}
+\group{
+	\IfLanguageName{english}{
+		Computer Systems Group
+	}{
+		FG Rechnersysteme
+	}
+}
+
+\reviewer{Prof. Dr.-Ing. Christian Hochberger \and M.Sc. Katharina Schultheis}
+
+\submissiondate{\today}
+\examdate{\today}
+
+% KI Macros
+
+% Zugriff auf Makros mit @ im Namen ermöglichen um das neue Makro zu definieren
+\makeatletter
+\newcommand{\getauthor}{\@author}
+\makeatother
+
+\newcommand{\aideclaration}{
+	%%%
+	% Check which version of the TU template your LaTeX installation uses! The old version uses a section for the affidavit, whereas the new version uses a subsection. Use the appropriate version below and comment out the other one!
+	%%%
+	\subsection*{Erklärung zur Nutzung von Künstlicher Intelligenz}
+	%\section*{Erklärung zur Nutzung von Künstlicher Intelligenz}
+	
+	\begin{sloppypar}%
+		Hiermit erkläre ich, \getauthor,  dass in der vorliegenden Arbeit Künstliche Intelligenz, wenn nicht weiter gekennzeichnet, ausschließlich zur sprachlichen Verbesserung und als Formatierungshilfe verwendet wurde. Inhalte, die von Künstlicher Intelligenz generiert wurden, und nicht oder nur leicht angepasst wurden, sind eindeutig markiert und werden in dem entsprechenden Abschnitt im Anhang erläutert.
+		\\
+	\end{sloppypar}
+	
+	\AffidavitSignature
+}
+
+\newif\ifainoteseen
+\ainoteseenfalse
+
+\newcounter{ainotecounter}
+\newcommand{\ainoteentries}{}
+
+\IfLanguageName{english}{%
+	\newcommand{\ainote}[2]{%
+		\global\ainoteseentrue%
+		\stepcounter{ainotecounter}%
+		\gappto\ainoteentries{\item \textbf{Model:}~#1 \\ \textbf{Input:}~#2}%
+		\hyperlink{ainotes}{\textsuperscript{AI:\theainotecounter}}%
+	}
+	\robustify\ainote
+	
+	\newcommand{\printainoteentries}{%
+		\ifainoteseen
+		\chapter*{Disclosure of Generated Content}
+		\hypertarget{ainotes}{}%
+		\begin{enumerate}
+			\ainoteentries
+		\end{enumerate}
+		\fi
+	}%
+}{%
+	\newcommand{\ainote}[2]{%
+		\global\ainoteseentrue%
+		\stepcounter{ainotecounter}%
+		\gappto\ainoteentries{\item \textbf{Modell:}~#1 \\ \textbf{Eingabe:}~#2}%
+		\hyperlink{ainotes}{\textsuperscript{KI:\theainotecounter}}%
+	}
+	\robustify\ainote
+	
+	\newcommand{\printainoteentries}{%
+		\ifainoteseen
+		\chapter*{Angaben zu generierten Inhalten}
+		\hypertarget{ainotes}{}%
+		\begin{enumerate}
+			\ainoteentries
+		\end{enumerate}
+		\fi
+	}%
+}	
+
+% ENDE KI Macros
+
+%	\tuprints{urn=1234,printid=12345}
+%	\dedication{Für alle, die \TeX{} nutzen.}
+
+\maketitle
+
+%\affidavit* % Bei Seminararbeiten ist die Eigenständigkeitserklärung nicht notwendig und kann auskommentiert werden.
+\aideclaration
+
+\tableofcontents
+
+\include{introduction}
+\include{implementation}
+\include{evaluation}
+\include{summary}
+
+% Required to avoid problems with figure captions generating two entries, as the macros would be parsed again within the \listoffigures section.
+\renewcommand{\ainote}[2]{}
+
+\IfLanguageName{english}{%
+	\chapter*{List of Abbreviations}%
+}{%
+	\chapter*{Abkürzungsverzeichnis}
+}
+\begin{acronym}
+	
+\end{acronym}
+
+\listoffigures	
+
+\nocite{*}
+\printbibliography
+
+\printainoteentries
+	
+\end{document}
