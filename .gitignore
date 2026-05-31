@@ -2,6 +2,7 @@
 *.idea
 *out
 *espresso.iml
+espresso/resources/output
 
 # Latex
 report/report.pdf
