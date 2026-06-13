@@ -5,7 +5,7 @@ This repository contains the first Mini-Task of Amey Wankhede and Sebastian Enge
 To clone this repository use:
 
 ```
-git clone git@git.rwth-aachen.de:sebastian.engel.20/lls-minitask-1.git
+git@github.com:AmeyDEWan/LLS-Minitask-Espresso.git
 ```
 
 The implementation can be found in `./espresso` and the latex files of the report can be found in `./report`.
