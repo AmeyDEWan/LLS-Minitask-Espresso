@@ -91,6 +91,13 @@ public class Function {
     }
 
     /**
+     * @return number of inputs
+     */
+    public int getNumInputs() {
+        return inputs.size();
+    }
+
+    /**
      * @return a string representation of the function
      */
     @Override

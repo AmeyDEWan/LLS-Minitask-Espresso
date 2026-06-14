@@ -25,7 +25,10 @@ public class Main {
         functions.forEach(System.out::println);
 
         // implement espresso
-
+        Espresso esp = new Espresso(functions);
+        esp.printCover();
+        System.out.println("");
+        esp.printComplementCover();
         blif.writeBLIF();
     }
 }
