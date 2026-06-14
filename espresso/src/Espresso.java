@@ -1,7 +1,6 @@
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Iterator;
 
 public class Espresso {
 
@@ -28,11 +27,8 @@ public class Espresso {
                 this.cover.add(pcnCube);
             }
         }
-        int[] order = new int[this.numInputs];
-        for (int i = 0; i < this.numInputs; i++) {
-            order[i] = i;
-        }
         Complement comp = new Complement(this.cover, this.numInputs);
+        int[] order = getOrder();
         this.complementCover = comp.getComplement(this.cover, order, 0);
     }
 
@@ -48,6 +44,21 @@ public class Espresso {
         for (int[] cube : this.complementCover) {
             System.out.println(Arrays.toString(cube));
         }
+    }
+
+    private int[] getOrder() {
+        int[] pos = new int[numInputs]; // count of TRUE (1) appearances per variable
+        int[] neg = new int[numInputs]; // count of FALSE (2) appearances per variable
+
+        for (int[] cube : cover) {
+            for (int i = 0; i < numInputs; i++) {
+                if (cube[i] == 1)
+                    pos[i]++;
+                else if (cube[i] == 2)
+                    neg[i]++;
+            }
+        }
+
     }
 
 }
