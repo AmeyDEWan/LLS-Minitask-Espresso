@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,18 +48,43 @@ public class Espresso {
     }
 
     private int[] getOrder() {
-        int[] pos = new int[numInputs]; // count of TRUE (1) appearances per variable
-        int[] neg = new int[numInputs]; // count of FALSE (2) appearances per variable
+        int[] order = new int[this.numInputs];
+        int[][] counts = new int[numInputs][2];
+        boolean[] isBinate = new boolean[numInputs];
+        ArrayList<Integer> binate = new ArrayList<>();
 
-        for (int[] cube : cover) {
+        for (int[] cube : this.cover) {
             for (int i = 0; i < numInputs; i++) {
-                if (cube[i] == 1)
-                    pos[i]++;
-                else if (cube[i] == 2)
-                    neg[i]++;
+                if (cube[i] == TRUE)
+                    counts[i][0]++;
+                else if (cube[i] == FALSE)
+                    counts[i][1]++;
             }
         }
 
+        for (int i = 0; i < numInputs; i++) {
+            if (counts[i][0] > 0 && counts[i][1] > 0) {
+                isBinate[i] = true;
+                binate.add(i);
+            }
+        }
+
+        // split at most stable (where TRUE count, FALSE count are closest => better
+        // balanced tree)
+        // sort in descending order. whichever with highest min, goes first
+        binate.sort((i, j) -> Math.min(counts[i][0], counts[i][1]) - Math.min(counts[j][0], counts[j][1]));
+
+        int idx = 0;
+        // fill binate first
+        for (int v : binate) {
+            order[idx++] = v;
+        }
+        for (int i = 0; i < numInputs; i++) {
+            if (!isBinate[i])
+                order[idx++] = i;
+        }
+
+        return order;
     }
 
 }
