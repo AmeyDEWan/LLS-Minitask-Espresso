@@ -1,8 +1,7 @@
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Iterator;
 
 public class Complement {
     private final List<int[]> cover;
@@ -13,7 +12,12 @@ public class Complement {
         this.numInputs = numInputs;
     }
 
-    public List<int[]> getComplement(List<int[]> cover, int[] order, int index) {
+    public List<int[]> getComplement(List<int[]> cover) {
+        int[] order = getOrder();
+        return getComplement(cover, order, 0);
+    }
+
+    private List<int[]> getComplement(List<int[]> cover, int[] order, int index) {
 
         // base conditions
 
@@ -116,6 +120,37 @@ public class Complement {
             returnList.add(newCube);
         }
         return returnList;
+    }
+
+    private int[] getOrder() {
+        int[] order = new int[this.numInputs];
+        int[][] counts = new int[numInputs][2];
+        boolean[] isBinate = new boolean[numInputs];
+        ArrayList<Integer> binate = new ArrayList<>();
+
+        for (int[] cube : this.cover) {
+            for (int i = 0; i < numInputs; i++) {
+                if (cube[i] == 1) counts[i][0]++;
+                else if (cube[i] == 2) counts[i][1]++;
+            }
+        }
+
+        for (int i = 0; i < numInputs; i++) {
+            if (counts[i][0] > 0 && counts[i][1] > 0) {
+                isBinate[i] = true;
+                binate.add(i);
+            }
+        }
+
+        binate.sort((i, j) -> Math.min(counts[j][0], counts[j][1]) - Math.min(counts[i][0], counts[i][1]));
+
+        int idx = 0;
+        for (int v : binate) order[idx++] = v;
+        for (int i = 0; i < numInputs; i++) {
+            if (!isBinate[i]) order[idx++] = i;
+        }
+
+        return order;
     }
 
     private List<int[]> mergeList(List<int[]> positiveCofactor, List<int[]> negativeCofactor) {
