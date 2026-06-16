@@ -150,14 +150,18 @@ public class Complement {
             }
         }
 
+        // sort such that tree is balanced
+        // (2, 10) , (5,4) => (5,4) is placed before (2,10) since (5,4) splits tree in
+        // better balance
         binate.sort((i, j) -> Math.min(counts[j][0], counts[j][1]) - Math.min(counts[i][0], counts[i][1]));
 
-        int idx = 0;
-        for (int v : binate)
-            order[idx++] = v;
+        // FIll in rest of the indices
+        int index = 0;
+        for (int x : binate)
+            order[index++] = x;
         for (int i = 0; i < numInputs; i++) {
             if (!isBinate[i])
-                order[idx++] = i;
+                order[index++] = i;
         }
 
         return order;

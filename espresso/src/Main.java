@@ -29,6 +29,8 @@ public class Main {
         esp.printCover();
         System.out.println("");
         esp.printComplementCover();
+        System.out.println("");
+        esp.printExpandedCover();
         blif.writeBLIF();
     }
 }

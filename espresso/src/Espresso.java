@@ -7,6 +7,7 @@ public class Espresso {
     /* private member functions */
     private final List<int[]> cover;
     private final List<int[]> complementCover;
+    private final List<int[]> expandedCover;
     private final int numInputs;
 
     int EMPTY = 0;
@@ -28,10 +29,11 @@ public class Espresso {
             }
         }
         Complement comp = new Complement(this.numInputs);
-
+        Expand expand = new Expand(this.numInputs);
         // pre-processing
 
         this.complementCover = comp.getComplement(this.cover);
+        this.expandedCover = expand.expandFunction(this.cover, this.complementCover);
     }
 
     public void printCover() {
@@ -44,6 +46,13 @@ public class Espresso {
     public void printComplementCover() {
         System.out.println("Complemented Cover : ");
         for (int[] cube : this.complementCover) {
+            System.out.println(Arrays.toString(cube));
+        }
+    }
+
+    public void printExpandedCover() {
+        System.out.println("Expanded Cover : ");
+        for (int[] cube : this.expandedCover) {
             System.out.println(Arrays.toString(cube));
         }
     }
