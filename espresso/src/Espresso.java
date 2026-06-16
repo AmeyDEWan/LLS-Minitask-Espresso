@@ -27,7 +27,10 @@ public class Espresso {
                 this.cover.add(pcnCube);
             }
         }
-        Complement comp = new Complement(this.cover, this.numInputs);
+        Complement comp = new Complement(this.numInputs);
+
+        // pre-processing
+
         this.complementCover = comp.getComplement(this.cover);
     }
 

@@ -4,16 +4,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Complement {
-    private final List<int[]> cover;
     private final int numInputs;
 
-    public Complement(List<int[]> cover, int numInputs) {
-        this.cover = cover;
+    public Complement(int numInputs) {
         this.numInputs = numInputs;
     }
 
     public List<int[]> getComplement(List<int[]> cover) {
-        int[] order = getOrder();
+        int[] order = getOrder(cover);
         return getComplement(cover, order, 0);
     }
 
@@ -122,13 +120,13 @@ public class Complement {
         return returnList;
     }
 
-    private int[] getOrder() {
+    private int[] getOrder(List<int[]> cover) {
         int[] order = new int[this.numInputs];
         int[][] counts = new int[numInputs][2];
         boolean[] isBinate = new boolean[numInputs];
         ArrayList<Integer> binate = new ArrayList<>();
 
-        for (int[] cube : this.cover) {
+        for (int[] cube : cover) {
             for (int i = 0; i < numInputs; i++) {
                 if (cube[i] == 1) counts[i][0]++;
                 else if (cube[i] == 2) counts[i][1]++;
