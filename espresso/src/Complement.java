@@ -10,9 +10,17 @@ public class Complement {
         this.numInputs = numInputs;
     }
 
-    public List<int[]> getComplement(List<int[]> cover) {
-        int[] order = getOrder(cover);
-        return getComplement(cover, order, 0);
+    public List<int[]> getComplement(final List<int[]> cover) {
+        List<int[]> myCover = new LinkedList<>();
+
+        for (int[] cube : cover) {
+            int[] newCube = cube.clone();
+            myCover.add(newCube);
+        }
+
+        int[] order = getOrder(myCover);
+
+        return getComplement(myCover, order, 0);
     }
 
     private List<int[]> getComplement(List<int[]> cover, int[] order, int index) {
@@ -54,7 +62,7 @@ public class Complement {
         return complementedCover;
     }
 
-    private int isUniversalCube(List<int[]> cover) {
+    private int isUniversalCube(final List<int[]> cover) {
         for (int[] cube : cover) {
             int isUniversal = 1;
             for (int i : cube) {
@@ -94,7 +102,7 @@ public class Complement {
                 continue;
             }
 
-            int[] newCube = cube.clone(); // deep copy and not reference
+            int[] newCube = cube.clone(); // deep copy and not reference, original remians untouched
             if (cube[supportVar] == 1) {
                 newCube[supportVar] = 3;
             }
@@ -128,8 +136,10 @@ public class Complement {
 
         for (int[] cube : cover) {
             for (int i = 0; i < numInputs; i++) {
-                if (cube[i] == 1) counts[i][0]++;
-                else if (cube[i] == 2) counts[i][1]++;
+                if (cube[i] == 1)
+                    counts[i][0]++;
+                else if (cube[i] == 2)
+                    counts[i][1]++;
             }
         }
 
@@ -143,9 +153,11 @@ public class Complement {
         binate.sort((i, j) -> Math.min(counts[j][0], counts[j][1]) - Math.min(counts[i][0], counts[i][1]));
 
         int idx = 0;
-        for (int v : binate) order[idx++] = v;
+        for (int v : binate)
+            order[idx++] = v;
         for (int i = 0; i < numInputs; i++) {
-            if (!isBinate[i]) order[idx++] = i;
+            if (!isBinate[i])
+                order[idx++] = i;
         }
 
         return order;
