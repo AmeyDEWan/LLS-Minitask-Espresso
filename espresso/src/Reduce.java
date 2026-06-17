@@ -67,7 +67,7 @@ public class Reduce {
         for (int i : order) {
             int[] cube = cover.get(i);
             int[] supercube = getSupercube(cover, i);
-            int[] reducedCube = intersection(cube, supercube);
+            int[] reducedCube = intersectCubes(cube, supercube);
             cover.set(i, reducedCube);
         }
         return cover;
@@ -98,7 +98,7 @@ public class Reduce {
         return supercube;
     }
 
-    private int[] intersection(final int[] cube, final int[] supercube) {
+    private int[] intersectCubes(final int[] cube, final int[] supercube) {
         int[] intersectedCube = new int[this.numInputs];
 
         for (int i = 0; i < this.numInputs; i++) {

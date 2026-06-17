@@ -60,9 +60,9 @@ do {
 
 2. Algortihm Implementation - 
     - [x] Compute function complement (Pre-Computed = Not part of Espresso minimization loop) -> Derive a efficient way to calculate the OFF-SET from the ON-SET. The OFF-Set is required to enforce strict boundary during the expansion phase of Espresso algorithm. Could be implemented as a `Class Complement`
-    - [ ] Reduce - A method that takes an On-Set and spits out reduced On-Set that is still valid(removes overlaps)
+    - [x] Reduce - A method that takes an On-Set and spits out reduced On-Set that is still valid(removes overlaps)
     - [x] Expand - A method that takes an On-Set & OFF-set; tries out new VALID directions to expand in; also implementing heuristic as in which cubes to expand(based on weight)
-    - [ ] Irredundant - A method that throws away On-Set that's already been covered by other On-Sets
+    - [x] Irredundant - A method that throws away On-Set that's already been covered by other On-Sets
     - [ ] A loop, with valid conditions, that runs the reduce,expand,irredundant
     - [ ] Evaluate using ABC
 
