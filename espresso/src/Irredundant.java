@@ -21,35 +21,38 @@ public class Irredundant {
     }
 
     private List<int[]> irredundant(List<int[]> cover) {
-        boolean[] marked = new boolean[cover.size()];
-        Arrays.fill(marked, false);
+        // boolean[] marked = new boolean[cover.size()];
+        // Arrays.fill(marked, false);
+        List<int[]> irredundantCover = new LinkedList<>(cover);
 
-        for (int i = 0; i < cover.size(); i++) {
-            int[] cube = cover.get(i);
+        for (int i = 0; i < irredundantCover.size(); i++) {
+            int[] cube = irredundantCover.get(i);
             List<int[]> newCover = new LinkedList<>();
 
             // omit cube[indexToOmit]
-            for (int j = 0; j < cover.size(); j++) {
+            for (int j = 0; j < irredundantCover.size(); j++) {
                 if (i == j)
                     continue;
-                newCover.add(cover.get(j));
+                newCover.add(irredundantCover.get(j));
             }
             List<int[]> surroundingCoverComplement = coverComplement(newCover);
 
-            if (!checkIntersect(cube, surroundingCoverComplement)) {
+            if (checkIntersect(cube, surroundingCoverComplement) == false) {
                 // no essential minterms => redundant
                 // mark for deletion
-                marked[i] = true;
+                irredundantCover.remove(i);
+                i--;
+                // marked[i] = true;
             }
         }
-        List<int[]> irreduantCover = new LinkedList<>();
-        for (int i = 0; i < marked.length; i++) {
-            if (!marked[i]) {
-                irreduantCover.add(cover.get(i));
-            }
-        }
+        // List<int[]> irreduantCover = new LinkedList<>();
+        // for (int i = 0; i < marked.length; i++) {
+        // if (!marked[i]) {
+        // irreduantCover.add(cover.get(i));
+        // }
+        // }
 
-        return irreduantCover;
+        return irredundantCover;
     }
 
     private List<int[]> coverComplement(final List<int[]> cover) {
