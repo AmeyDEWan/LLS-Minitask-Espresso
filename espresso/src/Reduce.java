@@ -63,6 +63,48 @@ public class Reduce {
     }
 
     private List<int[]> reduce(List<int[]> cover, final int[] order) {
+
+        for (int i : order) {
+            int[] cube = cover.get(i);
+            int[] supercube = getSupercube(cover, i);
+            int[] reducedCube = intersection(cube, supercube);
+            cover.set(i, reducedCube);
+        }
         return cover;
+    }
+
+    private int[] getSupercube(final List<int[]> cover, final int indexToOmit) {
+        int[] supercube = new int[this.numInputs];
+        List<int[]> newCover = new LinkedList<>();
+        Arrays.fill(supercube, 0);
+
+        // omit cube[indexToOmit]
+        for (int i = 0; i < cover.size(); i++) {
+            if (i == indexToOmit)
+                continue;
+            newCover.add(cover.get(i));
+        }
+
+        Complement comp = new Complement(this.numInputs);
+        List<int[]> compNewCover = comp.getComplement(newCover);
+
+        // get a supercube by OR every cube entry and collapse it into a single cube
+        for (int[] cube : compNewCover) {
+            for (int i = 0; i < this.numInputs; i++) {
+                supercube[i] |= cube[i];
+            }
+        }
+
+        return supercube;
+    }
+
+    private int[] intersection(final int[] cube, final int[] supercube) {
+        int[] intersectedCube = new int[this.numInputs];
+
+        for (int i = 0; i < this.numInputs; i++) {
+            intersectedCube[i] = (cube[i] & supercube[i]);
+        }
+
+        return intersectedCube;
     }
 }

@@ -30,10 +30,18 @@ public class Espresso {
         }
         Complement comp = new Complement(this.numInputs);
         Expand expand = new Expand(this.numInputs);
-        // pre-processing
 
+        // pre-processing
         this.complementCover = comp.getComplement(this.cover);
         this.expandedCover = expand.expandFunction(this.cover, this.complementCover);
+
+        // int prevSize = F.size();
+        // do {
+        // reduce
+        // expand
+        // irredundant
+        // } while(cover.size() > prevSize)
+
     }
 
     public void printCover() {
