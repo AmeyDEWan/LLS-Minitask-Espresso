@@ -7,7 +7,7 @@ public class Espresso {
     /* private member functions */
     private final List<int[]> cover;
     private final List<int[]> complementCover;
-    private final List<int[]> expandedCover;
+    // private final List<int[]> expandedCover;
     private final int numInputs;
 
     int EMPTY = 0;
@@ -34,19 +34,23 @@ public class Espresso {
         Reduce reduce = new Reduce(this.numInputs);
 
         // pre-processing
-        List<int[]> complementCover = comp.getComplement(this.cover);
-        List<int[]> expandedCover = expand.expandFunction(this.cover, complementCover);
+        this.complementCover = comp.getComplement(this.cover);
+        List<int[]> expandedCover = expand.expandFunction(this.cover, this.complementCover);
         List<int[]> irredundantCover = irrd.getIrredundant(expandedCover);
 
         // espresso loop
         int prevSize = irredundantCover.size();
         do {
             List<int[]> reducedCover = reduce.reduceFunction(irredundantCover);
-            expandedCover = expand.expandFunction(reducedCover, complementCover);
+            expandedCover = expand.expandFunction(reducedCover, this.complementCover);
             irredundantCover = irrd.getIrredundant(expandedCover);
         } while (irredundantCover.size() < prevSize);
 
         // return irredundant cover in BLIF format; lots of plumbing
+        System.out.println("Final Cover: ");
+        for (int[] cube : irredundantCover) {
+            System.out.println(Arrays.toString(cube));
+        }
     }
 
     public void printCover() {
@@ -63,11 +67,11 @@ public class Espresso {
         }
     }
 
-    public void printExpandedCover() {
-        System.out.println("Expanded Cover : ");
-        for (int[] cube : this.expandedCover) {
-            System.out.println(Arrays.toString(cube));
-        }
-    }
+    // public void printExpandedCover() {
+    // System.out.println("Expanded Cover : ");
+    // for (int[] cube : this.expandedCover) {
+    // System.out.println(Arrays.toString(cube));
+    // }
+    // }
 
 }

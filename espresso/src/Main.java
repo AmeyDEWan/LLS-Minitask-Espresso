@@ -30,7 +30,7 @@ public class Main {
         System.out.println("");
         esp.printComplementCover();
         System.out.println("");
-        esp.printExpandedCover();
+        // esp.printExpandedCover();
         blif.writeBLIF();
     }
 }
