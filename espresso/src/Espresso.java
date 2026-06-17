@@ -30,18 +30,23 @@ public class Espresso {
         }
         Complement comp = new Complement(this.numInputs);
         Expand expand = new Expand(this.numInputs);
+        Irredundant irrd = new Irredundant(this.numInputs);
+        Reduce reduce = new Reduce(this.numInputs);
 
         // pre-processing
-        this.complementCover = comp.getComplement(this.cover);
-        this.expandedCover = expand.expandFunction(this.cover, this.complementCover);
+        List<int[]> complementCover = comp.getComplement(this.cover);
+        List<int[]> expandedCover = expand.expandFunction(this.cover, complementCover);
+        List<int[]> irredundantCover = irrd.getIrredundant(expandedCover);
 
-        // int prevSize = F.size();
-        // do {
-        // reduce
-        // expand
-        // irredundant
-        // } while(cover.size() > prevSize)
+        // espresso loop
+        int prevSize = irredundantCover.size();
+        do {
+            List<int[]> reducedCover = reduce.reduceFunction(irredundantCover);
+            expandedCover = expand.expandFunction(reducedCover, complementCover);
+            irredundantCover = irrd.getIrredundant(expandedCover);
+        } while (irredundantCover.size() < prevSize);
 
+        // return irredundant cover in BLIF format; lots of plumbing
     }
 
     public void printCover() {

@@ -63,7 +63,7 @@ do {
     - [x] Reduce - A method that takes an On-Set and spits out reduced On-Set that is still valid(removes overlaps)
     - [x] Expand - A method that takes an On-Set & OFF-set; tries out new VALID directions to expand in; also implementing heuristic as in which cubes to expand(based on weight)
     - [x] Irredundant - A method that throws away On-Set that's already been covered by other On-Sets
-    - [ ] A loop, with valid conditions, that runs the reduce,expand,irredundant
+    - [x] A loop, with valid conditions, that runs the reduce,expand,irredundant
     - [ ] Evaluate using ABC
 
 
