@@ -13,7 +13,6 @@ Notice that the task description is available under `./task_description_espresso
 
 
 ## What we are doing?
-(would love ur input Sebastian)
 
 - We are performing logic minimization
 - the data within .blif file is a PLA structure; with lines representing logic such as 100, 11-, 0-1, etc.
@@ -60,9 +59,9 @@ do {
 [ ] Map following steps into functions for better tracability
 
 2. Algortihm Implementation - 
-    - [ ] Compute function complement (Pre-Computed = Not part of Espresso minimization loop) -> Derive a efficient way to calculate the OFF-SET from the ON-SET. The OFF-Set is required to enforce strict boundary during the expansion phase of Espresso algorithm. Could be implemented as a `Class Complement`
+    - [x] Compute function complement (Pre-Computed = Not part of Espresso minimization loop) -> Derive a efficient way to calculate the OFF-SET from the ON-SET. The OFF-Set is required to enforce strict boundary during the expansion phase of Espresso algorithm. Could be implemented as a `Class Complement`
     - [ ] Reduce - A method that takes an On-Set and spits out reduced On-Set that is still valid(removes overlaps)
-    - [ ] Expand - A method that takes an On-Set & OFF-set; tries out new VALID directions to expand in; also implementing heuristic as in which cubes to expand(based on size/weight?)
+    - [x] Expand - A method that takes an On-Set & OFF-set; tries out new VALID directions to expand in; also implementing heuristic as in which cubes to expand(based on weight)
     - [ ] Irredundant - A method that throws away On-Set that's already been covered by other On-Sets
     - [ ] A loop, with valid conditions, that runs the reduce,expand,irredundant
     - [ ] Evaluate using ABC
