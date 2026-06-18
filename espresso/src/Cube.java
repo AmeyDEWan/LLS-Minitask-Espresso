@@ -1,6 +1,8 @@
 import java.util.BitSet;
 import java.util.stream.IntStream;
 
+// Each input variable uses 2 bits in the BitSet: [2i, 2i+1]
+// 01 = TRUE, 10 = FALSE, 11 = Don't Care, 00 = illegal
 public class Cube extends BitSet {
 
     private final int numInputs;

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// Reads and writes BLIF (Berkeley Logic Interchange Format) files.
+// Each .names block becomes a Function; cube lines are parsed into PCN.
 public class Blif {
 
     private final String fileName;
@@ -139,6 +141,7 @@ public class Blif {
         }
     }
 
+    // Converts a PCN cube back to BLIF string: 11->"-", 10->"0", 01->"1"
     private static String writeCube(Cube cube) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < cube.getNumInputs(); i++) {

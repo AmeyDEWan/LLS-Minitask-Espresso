@@ -1,8 +1,8 @@
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+// Removes redundant cubes from a cover.
+// A cube is redundant if all its minterms are already covered by the other cubes.
 public class Irredundant {
     private final int numInputs;
 
@@ -21,37 +21,28 @@ public class Irredundant {
     }
 
     private List<int[]> irredundant(List<int[]> cover) {
-        // boolean[] marked = new boolean[cover.size()];
-        // Arrays.fill(marked, false);
         List<int[]> irredundantCover = new LinkedList<>(cover);
 
         for (int i = 0; i < irredundantCover.size(); i++) {
             int[] cube = irredundantCover.get(i);
             List<int[]> newCover = new LinkedList<>();
 
-            // omit cube[indexToOmit]
+            // Build cover without the current cube
             for (int j = 0; j < irredundantCover.size(); j++) {
                 if (i == j)
                     continue;
                 newCover.add(irredundantCover.get(j));
             }
+            // If cube doesn't intersect the complement of the rest, it adds no unique
+            // minterms
             List<int[]> surroundingCoverComplement = coverComplement(newCover);
 
             if (checkIntersect(cube, surroundingCoverComplement) == false) {
-                // no essential minterms => redundant
-                // mark for deletion
+                // cube is redundant — remove it
                 irredundantCover.remove(i);
                 i--;
-                // marked[i] = true;
             }
         }
-        // List<int[]> irreduantCover = new LinkedList<>();
-        // for (int i = 0; i < marked.length; i++) {
-        // if (!marked[i]) {
-        // irreduantCover.add(cover.get(i));
-        // }
-        // }
-
         return irredundantCover;
     }
 

@@ -3,6 +3,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+// Expand: tries to raise each literal in each cube to Don't Care (3)
+// without hitting the complement cover, making cubes as large as possible.
 public class Expand {
     private final int numInputs;
 
@@ -32,9 +34,9 @@ public class Expand {
                 if (cube[j] == 3)
                     continue;
                 int temp = cube[j];
-                cube[j] = 3;
-                if (checkIntersect(cube, complementCover)) {
-                    cube[j] = temp; // revert
+                cube[j] = 3; // try expanding this literal to DC
+                if (checkIntersect(cube, complementCover) == true) {
+                    cube[j] = temp; // expansion would cover 0-minterms, revert
                 }
             }
         }
@@ -57,6 +59,10 @@ public class Expand {
         return false;
     }
 
+    // Order cubes by ascending weight so the most-constrained cubes expand first.
+    // column vector = (in binary format) sum up all the TRUEs
+    // row vector = binary representation of cube
+    // Weight = dot product (column vector, row vector)
     private int[] getOrder(final List<int[]> cover) {
         int[] result = new int[cover.size()];
         int[] columnVector = new int[2 * (this.numInputs)];

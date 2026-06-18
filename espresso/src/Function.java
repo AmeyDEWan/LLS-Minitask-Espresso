@@ -116,6 +116,7 @@ public class Function {
         return sb.toString();
     }
 
+    // Converts a cover in int[] encoding (1=true, 2=false, 3=DC) to Cube/PCN objects
     public void ListToPCN(List<int[]> cover) {
         // [1, 2, 3] -> 01 10 11
         // [3, 3, 1] -> 11 11 01

@@ -1,17 +1,24 @@
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Espresso {
 
     /* private member functions */
-    private final List<int[]> cover;
+    /* ENCODING - 1 = 01 = TRUE, 2 = 10 = FALSE, 3 = 11 = Don't Care */
+    private final List<int[]> cover; // a 2D array, cover[i][j] = {1, 2, 3} means jth literal in ith cube has state =
+                                     // x
     private final List<int[]> complementCover;
-    // private final List<int[]> expandedCover;
     private final List<int[]> minimizedCover;
     private final int numInputs;
 
+    /**
+     * Create an espresso object
+     * 
+     * @param functions
+     */
     public Espresso(List<Function> functions) {
+
+        /* Conversion of bitset PCN into List of 1D arrays for easier manipulation */
         this.cover = new LinkedList<>();
         this.numInputs = functions.get(0).getNumInputs();
 
@@ -24,72 +31,34 @@ public class Espresso {
                 this.cover.add(pcnCube);
             }
         }
+
+        /* Object init for all the required steps of Espresso */
         Complement comp = new Complement(this.numInputs);
         Expand expand = new Expand(this.numInputs);
         Irredundant irrd = new Irredundant(this.numInputs);
         Reduce reduce = new Reduce(this.numInputs);
 
-        // pre-processing
+        /* Start of Espresso algorithm */
+        // (0) Get the complement
         this.complementCover = comp.getComplement(this.cover);
+        // (1) pre-processing
         List<int[]> expandedCover = expand.expandFunction(this.cover, this.complementCover);
-        System.out.println("Expanded Cover (in proprocessing): ");
-        for (int[] cube : expandedCover) {
-            System.out.println(Arrays.toString(cube));
-        }
-
         List<int[]> irredundantCover = irrd.getIrredundant(expandedCover);
+        // (2) espresso loop
 
-        // return irredundant cover in BLIF format; lots of plumbing
-        System.out.println("Before loop Cover: ");
-        for (int[] cube : irredundantCover) {
-            System.out.println(Arrays.toString(cube));
-        }
-        System.out.println();
-
-        // espresso loop
-        int prevSize;
+        int prevSize; // cost variable
         do {
             prevSize = irredundantCover.size();
             List<int[]> reducedCover = reduce.reduceFunction(irredundantCover);
             expandedCover = expand.expandFunction(reducedCover, this.complementCover);
             irredundantCover = irrd.getIrredundant(expandedCover);
         } while (irredundantCover.size() < prevSize);
-
         this.minimizedCover = new LinkedList<>(irredundantCover);
-        // return irredundant cover in BLIF format; lots of plumbing
-        System.out.println("Final Cover: ");
-        for (int[] cube : this.minimizedCover) {
-            System.out.println(Arrays.toString(cube));
-        }
-        System.out.println();
-        System.out.println("Cover Size");
-        System.out.println(this.minimizedCover.size());
-        System.out.println();
+
+        /* End of Espresso Algorithm */
     }
 
     public List<int[]> getMinimizedCover() {
         return new LinkedList<>(this.minimizedCover);
     }
-
-    public void printCover() {
-        System.out.println("Normal Cover : ");
-        for (int[] cube : this.cover) {
-            System.out.println(Arrays.toString(cube));
-        }
-    }
-
-    public void printComplementCover() {
-        System.out.println("Complemented Cover : ");
-        for (int[] cube : this.complementCover) {
-            System.out.println(Arrays.toString(cube));
-        }
-    }
-
-    // public void printExpandedCover() {
-    // System.out.println("Expanded Cover : ");
-    // for (int[] cube : this.expandedCover) {
-    // System.out.println(Arrays.toString(cube));
-    // }
-    // }
-
 }

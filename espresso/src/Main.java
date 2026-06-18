@@ -15,14 +15,14 @@ public class Main {
 
         List<Function> functions = blif.getFunctions();
 
-        // implement espresso
+        // espresso implementation
         Espresso esp = new Espresso(functions);
-
         List<int[]> minimizedCover = esp.getMinimizedCover();
 
-        // functions is always a single entry
+        // convert List<int[]> notation into PCN cubes utlized for class BLIF
         functions.get(0).ListToPCN(minimizedCover);
 
+        // Write BLIF file into ../resources/output
         blif.writeBLIF();
     }
 }

@@ -3,6 +3,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+// Reduce: shrinks each cube to its smallest form that still covers
+// at least one minterm not covered by the other cubes.
+// This makes subsequent Expand steps more effective.
 public class Reduce {
     private final int numInputs;
 
@@ -73,12 +76,14 @@ public class Reduce {
         return cover;
     }
 
+    // The supercube is the complement of all other cubes OR-ed together.
+    // Intersecting a cube with its supercube gives the smallest valid reduction.
     private int[] getSupercube(final List<int[]> cover, final int indexToOmit) {
         int[] supercube = new int[this.numInputs];
         List<int[]> newCover = new LinkedList<>();
         Arrays.fill(supercube, 0);
 
-        // omit cube[indexToOmit]
+        // Build cover without the cube being reduced
         for (int i = 0; i < cover.size(); i++) {
             if (i == indexToOmit)
                 continue;
@@ -88,7 +93,7 @@ public class Reduce {
         Complement comp = new Complement(this.numInputs);
         List<int[]> compNewCover = comp.getComplement(newCover);
 
-        // get a supercube by OR every cube entry and collapse it into a single cube
+        // OR all complement cubes together into a single supercube
         for (int[] cube : compNewCover) {
             for (int i = 0; i < this.numInputs; i++) {
                 supercube[i] |= cube[i];

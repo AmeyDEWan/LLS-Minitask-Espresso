@@ -3,6 +3,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+// Computes the complement of a cover using recursive Shannon expansion.
+// Splits on a binate variable (appears both true and false), recurses on cofactors,
+// then reassembles: F' = x*f_x' + x'*f_x-'
 public class Complement {
     private final int numInputs;
 
@@ -25,8 +28,8 @@ public class Complement {
 
     private List<int[]> getComplement(List<int[]> cover, int[] order, int index) {
 
-        // base conditions
-
+        // Base cases: empty cover -> universe; universal cube -> empty; single cube ->
+        // De Morgan
         if (cover.isEmpty()) {
             List<int[]> universalCubeCover = new LinkedList<>();
             int[] pcnCube = new int[numInputs];
@@ -46,6 +49,7 @@ public class Complement {
 
         int splitVar = order[index];
 
+        // get positive and negative cofactors
         List<int[]> positiveCofactor = getComplement(getPositiveCofactor(cover, splitVar), order, index + 1);
         List<int[]> negativeCofactor = getComplement(getNegativeCofactor(cover, splitVar), order, index + 1);
 
@@ -78,6 +82,7 @@ public class Complement {
         return 0;
     }
 
+    // Complement of a single cube: flip each literal, one output cube per literal
     private List<int[]> getDeMorgan(int[] cube) {
         List<int[]> complemenCover = new LinkedList<>();
 
@@ -128,6 +133,9 @@ public class Complement {
         return returnList;
     }
 
+    // Choose split variable order: binate variables first (sorted for balanced
+    // tree),
+    // then unate variables. This minimises the recursion depth.
     private int[] getOrder(List<int[]> cover) {
         int[] order = new int[this.numInputs];
         int[][] counts = new int[numInputs][2];
@@ -168,12 +176,6 @@ public class Complement {
     }
 
     private List<int[]> mergeList(List<int[]> positiveCofactor, List<int[]> negativeCofactor) {
-        // if (positiveCofactor.isEmpty()) {
-        // return negativeCofactor;
-        // }
-        // if (negativeCofactor.isEmpty()) {
-        // return positiveCofactor;
-        // }
 
         List<int[]> mergedList = new LinkedList<>(positiveCofactor);
         mergedList.addAll(negativeCofactor);
