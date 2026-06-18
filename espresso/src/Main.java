@@ -1,10 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -22,15 +15,14 @@ public class Main {
 
         List<Function> functions = blif.getFunctions();
 
-        functions.forEach(System.out::println);
-
         // implement espresso
         Espresso esp = new Espresso(functions);
-        esp.printCover();
-        System.out.println("");
-        esp.printComplementCover();
-        System.out.println("");
-        // esp.printExpandedCover();
+
+        List<int[]> minimizedCover = esp.getMinimizedCover();
+
+        // functions is always a single entry
+        functions.get(0).ListToPCN(minimizedCover);
+
         blif.writeBLIF();
     }
 }

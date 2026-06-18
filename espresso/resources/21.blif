@@ -1,0 +1,7 @@
+.model test_xor
+.inputs a b
+.outputs f
+.names a b f
+10 1
+01 1
+.end

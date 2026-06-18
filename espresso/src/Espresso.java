@@ -8,6 +8,7 @@ public class Espresso {
     private final List<int[]> cover;
     private final List<int[]> complementCover;
     // private final List<int[]> expandedCover;
+    private final List<int[]> minimizedCover;
     private final int numInputs;
 
     public Espresso(List<Function> functions) {
@@ -54,12 +55,20 @@ public class Espresso {
             irredundantCover = irrd.getIrredundant(expandedCover);
         } while (irredundantCover.size() < prevSize);
 
+        this.minimizedCover = new LinkedList<>(irredundantCover);
         // return irredundant cover in BLIF format; lots of plumbing
         System.out.println("Final Cover: ");
-        for (int[] cube : irredundantCover) {
+        for (int[] cube : this.minimizedCover) {
             System.out.println(Arrays.toString(cube));
         }
         System.out.println();
+        System.out.println("Cover Size");
+        System.out.println(this.minimizedCover.size());
+        System.out.println();
+    }
+
+    public List<int[]> getMinimizedCover() {
+        return new LinkedList<>(this.minimizedCover);
     }
 
     public void printCover() {

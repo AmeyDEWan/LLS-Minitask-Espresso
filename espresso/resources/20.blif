@@ -1,0 +1,7 @@
+.model ex
+.inputs a b
+.outputs F
+.names a b F
+1- 1
+-1 1
+.end

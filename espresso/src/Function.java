@@ -115,4 +115,31 @@ public class Function {
 
         return sb.toString();
     }
+
+    public void ListToPCN(List<int[]> cover) {
+        // [1, 2, 3] -> 01 10 11
+        // [3, 3, 1] -> 11 11 01
+        List<Cube> function = new LinkedList<>();
+        for (int[] cube : cover) {
+            Cube pcn = new Cube(getNumInputs());
+            for (int i = 0; i < getNumInputs(); i++) {
+                if (cube[i] == 1) {
+                    pcn.clear(2 * i);
+                    pcn.set(2 * i + 1);
+                } else if (cube[i] == 2) {
+                    pcn.clear(2 * i + 1);
+                    pcn.set(2 * i);
+                } else if (cube[i] == 3) {
+                    pcn.set(2 * i);
+                    pcn.set(2 * i + 1);
+                }
+            }
+            function.add(pcn);
+        }
+
+        this.function.clear();
+        for (Cube cube : function) {
+            this.function.add(cube);
+        }
+    }
 }

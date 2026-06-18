@@ -14,6 +14,7 @@ public class Blif {
 
     /**
      * Parses a simple BLIF file into a list of functions
+     * 
      * @param fileName the path to the BLIF file
      * @return a list of functions in order of their appearance
      */
@@ -41,7 +42,8 @@ public class Blif {
 
                     /* parse names of inputs and output */
                     List<String> namesLine = new ArrayList<>(Arrays.asList(line.split(" ")));
-                    currentFunction = new Function(namesLine.subList(1, namesLine.size() - 1), namesLine.get(namesLine.size() - 1));
+                    currentFunction = new Function(namesLine.subList(1, namesLine.size() - 1),
+                            namesLine.get(namesLine.size() - 1));
 
                     /* .end or a blank line marks the end of a function */
                 } else if (line.startsWith(".end") || line.isBlank()) {
@@ -51,7 +53,7 @@ public class Blif {
                     /* inside a function, lines represent cubes */
                 } else if (currentFunction != null) {
                     currentFunction.addCube(parseCube(line, currentFunction.inputs.size()));
-                } else if(!line.startsWith("#")) {
+                } else if (!line.startsWith("#")) {
                     preambleStringBuilder.append(line).append("\n");
                 }
 
@@ -81,20 +83,23 @@ public class Blif {
 
         Cube pcn = new Cube(numInputs);
 
-        /* transform the string cubeBLIF into a Cube object that adheres to the positional cube notation (see lecture) */
-        for(int i = 0; i < numInputs; i++){
-            switch(line.charAt(i)){
+        /*
+         * transform the string cubeBLIF into a Cube object that adheres to the
+         * positional cube notation (see lecture)
+         */
+        for (int i = 0; i < numInputs; i++) {
+            switch (line.charAt(i)) {
                 case '-':
-                    pcn.set(i*2, true);
-                    pcn.set(i*2 +1, true);
+                    pcn.set(i * 2, true);
+                    pcn.set(i * 2 + 1, true);
                     break;
                 case '0':
-                    pcn.set(i*2, true);
-                    pcn.set(i*2 +1, false);
+                    pcn.set(i * 2, true);
+                    pcn.set(i * 2 + 1, false);
                     break;
                 case '1':
-                    pcn.set(i*2, false);
-                    pcn.set(i*2 +1, true);
+                    pcn.set(i * 2, false);
+                    pcn.set(i * 2 + 1, true);
                     break;
                 default:
                     System.out.println("Error can only pars 0, 1 and - inputs");
@@ -105,7 +110,7 @@ public class Blif {
         return pcn;
     }
 
-    public void writeBLIF(){
+    public void writeBLIF() {
         BufferedWriter writer;
         try {
             Path inputFile = Paths.get(fileName);
@@ -120,10 +125,10 @@ public class Blif {
             writer.write("# minimized by reverse engineered ESPRESSO\n");
             writer.write(preamble);
 
-            for( Function function : functions){
+            for (Function function : getFunctions()) {
                 writer.write(".names " + String.join(" ", function.inputs) + " " + function.output + "\n");
 
-                for(Cube cube : function.getCubes()){
+                for (Cube cube : function.getCubes()) {
                     writer.write(writeCube(cube));
                 }
             }
@@ -134,14 +139,14 @@ public class Blif {
         }
     }
 
-    private static String writeCube(Cube cube){
+    private static String writeCube(Cube cube) {
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i< cube.getNumInputs(); i++){
-            if(cube.get(2*i) && cube.get(2*i+1)) {
+        for (int i = 0; i < cube.getNumInputs(); i++) {
+            if (cube.get(2 * i) && cube.get(2 * i + 1)) {
                 sb.append("-");
-            } else if(cube.get(2*i) && !cube.get(2*i+1)) {
+            } else if (cube.get(2 * i) && !cube.get(2 * i + 1)) {
                 sb.append("0");
-            } else if(!cube.get(2*i) && cube.get(2*i+1)) {
+            } else if (!cube.get(2 * i) && cube.get(2 * i + 1)) {
                 sb.append("1");
             } else {
                 System.out.println("Error: can't write illegal cubes");
@@ -151,7 +156,7 @@ public class Blif {
         return sb.toString();
     }
 
-    public List<Function> getFunctions(){
+    public List<Function> getFunctions() {
         return functions;
     }
 
