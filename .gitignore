@@ -9,8 +9,9 @@ out/
 *.iml
 .vscode/
 
-# Espresso output files
+# Output files
 espresso/resources/output/*.blif
+resources/output/
 
 # Latex (entire folder not tracked)
 report
