@@ -1,29 +1,16 @@
-# Java and IDE
-*.idea
-*out
-*espresso.iml
-espresso/resources/output
+# System
+.DS_Store
+**/.DS_Store
 
-# Latex
-report/report.pdf
-report/*.aux
-report/*.bbl
-report/*.bcf
-report/*.blg
-report/*.fdb_latexmk
-report/*.fls
-report/*.lof
-report/*.log
-report/*.run.xml
-report/*.synctex.gz
-report/*.toc
-report/*.xmpdata
-report/*.lof
-report/*.lot
-report/*.out
-report/*.fmt
-report/*.fot
-report/*.cb
-report/*.cb2
-report/*.lb
-report/*.xmpi
+# Java and IDE
+.idea/
+*.class
+out/
+*.iml
+.vscode/
+
+# Espresso output files
+espresso/resources/output/*.blif
+
+# Latex (entire folder not tracked)
+report

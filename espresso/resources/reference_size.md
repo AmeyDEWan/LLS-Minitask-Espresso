@@ -1,4 +1,4 @@
-| name | initial | minimized |
+sr| name | initial | minimized |
 |------|---------|-----------|
 | 0 | 4 | 3 |
 | 1 | 4 | 1 |

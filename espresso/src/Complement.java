@@ -53,6 +53,8 @@ public class Complement {
         List<int[]> positiveCofactor = getComplement(getPositiveCofactor(cover, splitVar), order, index + 1);
         List<int[]> negativeCofactor = getComplement(getNegativeCofactor(cover, splitVar), order, index + 1);
 
+        // F_comp = X_i * NegativeCofactor + X_i' * PoisitiveCofactor
+        // Do the multiplication
         for (int[] cube : positiveCofactor) {
             cube[splitVar] = 1;
         }
