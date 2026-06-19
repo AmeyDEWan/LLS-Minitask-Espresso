@@ -40,6 +40,7 @@ public class Espresso {
 
         /* Start of Espresso algorithm */
         // (0) Get the complement
+        System.out.println();
         long t0 = System.nanoTime();
         this.complementCover = comp.getComplement(this.cover);
         System.out.println("Complement: " + (System.nanoTime() - t0) / 1e6 + " ms");
@@ -47,18 +48,21 @@ public class Espresso {
         System.out.println("original Cover:");
         System.out.println(this.cover.size());
 
+        System.out.println();
         t0 = System.nanoTime();
         List<int[]> expandedCover = expand.expandFunction(this.cover, this.complementCover);
         System.out.println("Expanded Cover:");
         System.out.println(expandedCover.size());
         System.out.println("Expand: " + (System.nanoTime() - t0) / 1e6 + " ms");
 
+        System.out.println();
         t0 = System.nanoTime();
         List<int[]> irredundantCover = irrd.getIrredundant(expandedCover);
         System.out.println("Irredundant Cover:");
         System.out.println(irredundantCover.size());
         System.out.println("Irredundant: " + (System.nanoTime() - t0) / 1e6 + " ms");
 
+        System.out.println();
         // (2) espresso loop
         int prevSize; // cost variable
         int iteration = 0;
@@ -67,7 +71,7 @@ public class Espresso {
             List<int[]> reducedCover = reduce.reduceFunction(irredundantCover);
             expandedCover = expand.expandFunction(reducedCover, this.complementCover);
             irredundantCover = irrd.getIrredundant(expandedCover);
-            System.out.println("Loop " + (++iteration) + ": " + prevSize + " -> " + irredundantCover.size());
+            System.out.println("Loop " + (++iteration));
         } while (irredundantCover.size() < prevSize);
         this.minimizedCover = new LinkedList<>(irredundantCover);
         System.out.println("Final Cover:");
