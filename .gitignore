@@ -13,5 +13,5 @@ out/
 espresso/resources/output/*.blif
 resources/output/
 
-# Latex (entire folder not tracked)
+# Latex 
 report
